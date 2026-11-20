@@ -1,0 +1,670 @@
+C Programming Lab — 10 Questions & Answers
+C PROGRAMMING · LAB REVISION
+10 Lab Questions & Answers
+Programs, sample outputs, and key concepts for your C programming lab. Open a question to view its solution.
+01
+Student Marks Using Functions and Arrays
+⌄
+Aim: Read marks of 5 subjects, calculate total and average using functions, and find the highest mark using pointers.
+#include <stdio.h>
+
+int calculateTotal(int marks[], int n)
+{
+    int total = 0;
+    for(int i = 0; i < n; i++)
+        total += marks[i];
+    return total;
+}
+
+float calculateAverage(int total, int n)
+{
+    return (float)total / n;
+}
+
+void findHighest(int marks[], int n, int *highest)
+{
+    *highest = marks[0];
+    for(int i = 1; i < n; i++)
+        if(marks[i] > *highest)
+            *highest = marks[i];
+}
+
+int main()
+{
+    int marks[5], total, highest;
+    float average;
+
+    printf("Enter marks of 5 subjects:\\n");
+    for(int i = 0; i < 5; i++)
+        scanf("%d", &marks[i]);
+
+    total = calculateTotal(marks, 5);
+    average = calculateAverage(total, 5);
+    findHighest(marks, 5, &highest);
+
+    printf("Total marks = %d\\n", total);
+    printf("Average marks = %.2f\\n", average);
+    printf("Highest marks = %d\\n", highest);
+    return 0;
+}
+Sample output
+Enter marks of 5 subjects:
+85 90 78 92 88
+Total marks = 433
+Average marks = 86.60
+Highest marks = 92
+Key concepts
+marks[]
+passes an array to a function.
+calculateTotal()
+returns total marks.
+calculateAverage()
+returns the average.
+&highest
+passes the address;
+*highest
+changes the original variable through the pointer.
+02
+Matrix Addition Using Functions
+⌄
+Aim: Read two 2 × 2 matrices and calculate their sum using a separate function.
+#include <stdio.h>
+
+void addMatrices(int a[2][2], int b[2][2], int sum[2][2])
+{
+    for(int i = 0; i < 2; i++)
+        for(int j = 0; j < 2; j++)
+            sum[i][j] = a[i][j] + b[i][j];
+}
+
+int main()
+{
+    int a[2][2], b[2][2], sum[2][2];
+
+    printf("Enter elements of first matrix:\\n");
+    for(int i = 0; i < 2; i++)
+        for(int j = 0; j < 2; j++)
+            scanf("%d", &a[i][j]);
+
+    printf("Enter elements of second matrix:\\n");
+    for(int i = 0; i < 2; i++)
+        for(int j = 0; j < 2; j++)
+            scanf("%d", &b[i][j]);
+
+    addMatrices(a, b, sum);
+    printf("Sum of matrices:\\n");
+    for(int i = 0; i < 2; i++) {
+        for(int j = 0; j < 2; j++)
+            printf("%d ", sum[i][j]);
+        printf("\\n");
+    }
+    return 0;
+}
+Sample output
+Enter elements of first matrix:
+1 2
+3 4
+Enter elements of second matrix:
+5 6
+7 8
+Sum of matrices:
+6 8
+10 12
+Logic
+Each corresponding element is added:
+sum[i][j] = a[i][j] + b[i][j]
+.
+03
+String Length and Reversal Using Pointers
+⌄
+Aim: Find string length and reverse a string using pointers, without predefined string functions.
+#include <stdio.h>
+
+int main()
+{
+    char str[100];
+    char *p, *q;
+    int length = 0;
+    char temp;
+
+    printf("Enter a string: ");
+    scanf("%99[^\\n]", str);
+
+    p = str;
+    while(*p != '\\0') {
+        length++;
+        p++;
+    }
+    printf("Length of string = %d\\n", length);
+
+    p = str;
+    q = str + length - 1;
+    while(p < q) {
+        temp = *p;
+        *p = *q;
+        *q = temp;
+        p++;
+        q--;
+    }
+    printf("Reversed string = %s\\n", str);
+    return 0;
+}
+Sample output
+Enter a string: Hello World
+Length of string = 11
+Reversed string = dlroW olleH
+Logic
+p
+points to the first character;
+q
+points to the last character.
+Swap characters at both pointers.
+Move
+p
+forward and
+q
+backward until they meet or cross.
+04
+Factorial and Sum of Digits Using Recursion
+⌄
+Aim: Find factorial and sum of digits of a number using recursive functions.
+#include <stdio.h>
+
+int factorial(int n)
+{
+    if(n == 0 || n == 1)
+        return 1;
+    return n * factorial(n - 1);
+}
+
+int sumDigits(int n)
+{
+    if(n == 0)
+        return 0;
+    return (n % 10) + sumDigits(n / 10);
+}
+
+int main()
+{
+    int n;
+    printf("Enter a number: ");
+    scanf("%d", &n);
+    printf("Factorial = %d\\n", factorial(n));
+    printf("Sum of digits = %d\\n", sumDigits(n));
+    return 0;
+}
+Sample output
+Enter a number: 5
+Factorial = 120
+Sum of digits = 5
+Recursive logic
+Factorial:
+n! = n × (n−1)!
+. Sum of digits:
+S(n) = (n % 10) + S(n / 10)
+. The base case stops recursion when
+n == 0
+(or for factorial, when
+n == 0 || n == 1
+).
+This sample is intended for non-negative input. Factorial values also overflow an int for sufficiently large inputs.
+05
+Dynamic Memory Allocation — malloc(), calloc(), realloc()
+⌄
+Aim: Dynamically allocate an integer array, read and display it, and demonstrate malloc(), realloc(), and calloc().
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int n, i;
+    int *ptr;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    ptr = (int *)malloc(n * sizeof(int));
+    if(ptr == NULL) {
+        printf("Memory allocation failed\\n");
+        return 1;
+    }
+
+    printf("Enter %d elements:\\n", n);
+    for(i = 0; i < n; i++)
+        scanf("%d", &ptr[i]);
+
+    printf("Elements using malloc:\\n");
+    for(i = 0; i < n; i++)
+        printf("%d ", ptr[i]);
+
+    ptr = (int *)realloc(ptr, (n + 2) * sizeof(int));
+    if(ptr == NULL) {
+        printf("Reallocation failed\\n");
+        return 1;
+    }
+
+    printf("\\nEnter 2 additional elements:\\n");
+    for(i = n; i < n + 2; i++)
+        scanf("%d", &ptr[i]);
+
+    printf("Elements after realloc:\\n");
+    for(i = 0; i < n + 2; i++)
+        printf("%d ", ptr[i]);
+    free(ptr);
+
+    ptr = (int *)calloc(5, sizeof(int));
+    if(ptr == NULL) {
+        printf("Memory allocation failed\\n");
+        return 1;
+    }
+
+    printf("\\nElements initialized by calloc:\\n");
+    for(i = 0; i < 5; i++)
+        printf("%d ", ptr[i]);
+
+    free(ptr);
+    return 0;
+}
+Sample output
+Enter number of elements: 3
+Enter 3 elements:
+10 20 30
+Elements using malloc:
+10 20 30
+Enter 2 additional elements:
+40 50
+Elements after realloc:
+10 20 30 40 50
+Elements initialized by calloc:
+0 0 0 0 0
+Comparison
+Function
+Purpose
+Initialization
+malloc()
+Allocates memory
+Uninitialized
+calloc()
+Allocates space for multiple elements
+Zero-initialized
+realloc()
+Changes allocated block size
+Preserves retained existing contents
+free(ptr)
+releases allocated memory back to the allocator.
+06
+Student Details Using Structures and Pointers
+⌄
+Aim: Store and display two students' details using an array of structures, typedef, and a structure pointer.
+#include <stdio.h>
+
+typedef struct {
+    int roll;
+    char name[50];
+    float marks;
+} Student;
+
+int main()
+{
+    Student s[2];
+    Student *ptr = s;
+
+    for(int i = 0; i < 2; i++) {
+        printf("Enter details of student %d:\\n", i + 1);
+        printf("Roll number: ");
+        scanf("%d", &ptr[i].roll);
+        printf("Name: ");
+        scanf(" %49[^\\n]", ptr[i].name);
+        printf("Marks: ");
+        scanf("%f", &ptr[i].marks);
+    }
+
+    printf("\\nStudent Details:\\n");
+    for(int i = 0; i < 2; i++) {
+        printf("\\nRoll Number: %d\\n", ptr[i].roll);
+        printf("Name: %s\\n", ptr[i].name);
+        printf("Marks: %.2f\\n", ptr[i].marks);
+    }
+    return 0;
+}
+Sample output
+Enter details of student 1:
+Roll number: 101
+Name: Rahul
+Marks: 85
+Enter details of student 2:
+Roll number: 102
+Name: Amit
+Marks: 90
+Student Details:
+Roll Number: 101
+Name: Rahul
+Marks: 85.00
+Roll Number: 102
+Name: Amit
+Marks: 90.00
+Key concepts
+typedef struct
+creates the type alias
+Student
+.
+Student s[2]
+creates two structure records.
+Student *ptr = s
+points at the first structure in the array.
+07
+Union and Bit-fields
+⌄
+Aim: Demonstrate shared memory in a union and use bit-fields for age and gender.
+#include <stdio.h>
+
+union Data {
+    int integer;
+    float decimal;
+    char character;
+};
+
+struct Student {
+    unsigned int age : 7;
+    unsigned int gender : 1;
+};
+
+int main()
+{
+    union Data d;
+    struct Student s;
+
+    printf("Union demonstration:\\n");
+    d.integer = 100;
+    printf("Integer = %d\\n", d.integer);
+    d.decimal = 25.5;
+    printf("Float = %.2f\\n", d.decimal);
+    d.character = 'A';
+    printf("Character = %c\\n", d.character);
+
+    printf("\\nStudent details:\\n");
+    printf("Enter age: ");
+    scanf("%u", &s.age);
+    printf("Enter gender (0 = Female, 1 = Male): ");
+    scanf("%u", &s.gender);
+
+    printf("\\nAge = %u\\n", s.age);
+    if(s.gender == 1)
+        printf("Gender = Male\\n");
+    else
+        printf("Gender = Female\\n");
+    return 0;
+}
+Sample output
+Union demonstration:
+Integer = 100
+Float = 25.50
+Character = A
+Student details:
+Enter age: 18
+Enter gender (0 = Female, 1 = Male): 1
+Age = 18
+Gender = Male
+Union vs structure
+Structure
+Union
+Members have separate storage
+Members share storage
+Size is generally the combined member storage, with padding
+Size is at least large enough for its largest member, with alignment
+Members can hold values simultaneously
+Only one member's value is meaningful at a time
+Bit-fields
+age : 7
+reserves a 7-bit field;
+gender : 1
+reserves a 1-bit field. Bit-field layout is implementation-dependent.
+08
+Student Records Using Text Files
+⌄
+Aim: Write student information to a text file using fprintf() and read it using fscanf().
+#include <stdio.h>
+
+int main()
+{
+    FILE *fp;
+    int roll;
+    char name[50];
+    float marks;
+
+    fp = fopen("student.txt", "w");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+
+    printf("Enter roll number: ");
+    scanf("%d", &roll);
+    printf("Enter name: ");
+    scanf(" %49[^\\n]", name);
+    printf("Enter marks: ");
+    scanf("%f", &marks);
+
+    fprintf(fp, "%d %s %.2f\\n", roll, name, marks);
+    fclose(fp);
+
+    fp = fopen("student.txt", "r");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+
+    fscanf(fp, "%d %49s %f", &roll, name, &marks);
+    printf("\\nData read from file:\\n");
+    printf("Roll Number: %d\\n", roll);
+    printf("Name: %s\\n", name);
+    printf("Marks: %.2f\\n", marks);
+
+    fclose(fp);
+    return 0;
+}
+Sample output
+Enter roll number: 101
+Enter name: Rahul
+Enter marks: 88.5
+Data read from file:
+Roll Number: 101
+Name: Rahul
+Marks: 88.50
+File functions
+Function
+Purpose
+fopen()
+Opens a file
+fprintf()
+Writes formatted data to a file
+fscanf()
+Reads formatted data from a file
+fclose()
+Closes a file
+Modes:
+w
+writes/overwrites,
+r
+reads an existing file, and
+a
+appends to the file.
+09
+Student Records Using Binary Files
+⌄
+Aim: Store one student record using fwrite(), retrieve it using fread(), and demonstrate fseek(), ftell(), and rewind().
+#include <stdio.h>
+
+struct Student {
+    int roll;
+    char name[50];
+    float marks;
+};
+
+int main()
+{
+    FILE *fp;
+    struct Student s;
+
+    printf("Enter roll number: ");
+    scanf("%d", &s.roll);
+    printf("Enter name: ");
+    scanf(" %49[^\\n]", s.name);
+    printf("Enter marks: ");
+    scanf("%f", &s.marks);
+
+    fp = fopen("student.dat", "wb");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+    fwrite(&s, sizeof(s), 1, fp);
+    fclose(fp);
+
+    fp = fopen("student.dat", "rb");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+
+    printf("\\nInitial position: %ld\\n", ftell(fp));
+    fseek(fp, 0, SEEK_END);
+    printf("Position at end: %ld\\n", ftell(fp));
+    rewind(fp);
+    printf("Position after rewind: %ld\\n", ftell(fp));
+
+    fread(&s, sizeof(s), 1, fp);
+    printf("\\nStudent Record:\\n");
+    printf("Roll Number: %d\\n", s.roll);
+    printf("Name: %s\\n", s.name);
+    printf("Marks: %.2f\\n", s.marks);
+
+    fclose(fp);
+    return 0;
+}
+Sample output
+Enter roll number: 101
+Enter name: Rahul
+Enter marks: 90
+Initial position: 0
+Position at end: (depends on structure size)
+Position after rewind: 0
+Student Record:
+Roll Number: 101
+Name: Rahul
+Marks: 90.00
+Functions
+fwrite()
+writes binary data.
+fread()
+reads binary data.
+fseek()
+moves the file position.
+ftell()
+reports current file position.
+rewind()
+moves the position to the beginning.
+The file position/size value depends on your compiler, system, and structure padding.
+10
+File Operations Using Command-Line Arguments
+⌄
+Aim: Accept a filename from command-line arguments, display the file contents, and count characters using fgetc().
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+    FILE *fp;
+    int ch, count = 0;
+
+    if(argc != 2) {
+        printf("Usage: %s filename\\n", argv[0]);
+        return 1;
+    }
+
+    fp = fopen(argv[1], "r");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+
+    printf("File contents:\\n");
+    while((ch = fgetc(fp)) != EOF) {
+        putchar(ch);
+        count++;
+    }
+
+    printf("\\n\\nTotal number of characters = %d\\n", count);
+    fclose(fp);
+    return 0;
+}
+Create data.txt
+Hello World
+
+Welcome to C
+Compile and run
+gcc program.c -o program
+./program data.txt
+Sample output
+File contents:
+Hello World
+
+Welcome to C
+
+Total number of characters = 20
+Command-line arguments
+Expression
+Meaning
+argc
+Number of command-line arguments
+argv
+Array of argument strings
+argv[0]
+Program name/path
+argv[1]
+Filename supplied by user
+For
+./program data.txt
+,
+argc = 2
+,
+argv[0] = "./program"
+, and
+argv[1] = "data.txt"
+.
+Quick Revision Table
+Q
+Topic
+Key concepts
+1
+Marks
+Arrays, functions, pointers
+2
+Matrix Addition
+2D arrays, functions
+3
+String Reversal
+Strings, pointers, pointer arithmetic
+4
+Recursion
+Recursive functions, base conditions
+5
+Dynamic Memory
+malloc, calloc, realloc, free
+6
+Structures
+typedef, arrays of structures, pointers
+7
+Union & Bit-fields
+Shared memory, bit-fields
+8
+Text Files
+fprintf, fscanf
+9
+Binary Files
+fwrite, fread, fseek, ftell, rewind
+10
+Command-line Files
+argc, argv, fgetc, EOF
+High-priority practice:
+Questions 3, 5, 7, 9, and 10 — pointers, dynamic memory, bit-fields, binary files, and command-line file handling.
+Made for C Programming Lab Revision · Use the search bar to filter questions
