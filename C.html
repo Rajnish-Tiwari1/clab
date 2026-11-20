@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C Programming Lab — 10 Questions & Answers</title>
+<style>
+  :root { --bg:#0b1020; --panel:#141c31; --panel2:#19243b; --text:#edf2ff; --muted:#a9b7d2; --accent:#79a8ff; --accent2:#8be9c4; --border:rgba(255,255,255,.1); }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter,Segoe UI,Arial,sans-serif; background:radial-gradient(ellipse at top,#1c2c4c 0%,var(--bg) 50%); color:var(--text); line-height:1.65; }
+  header { padding:54px 20px 32px; text-align:center; }
+  header .tag { display:inline-block; color:var(--accent2); border:1px solid rgba(139,233,196,.3); background:rgba(139,233,196,.08); border-radius:99px; padding:6px 12px; font-size:.85rem; letter-spacing:.04em; }
+  h1 { margin:15px 0 8px; font-size:clamp(1.9rem,4vw,3.1rem); letter-spacing:-.04em; }
+  header p { color:var(--muted); max-width:700px; margin:0 auto; }
+  .toolbar { max-width:1100px; margin:0 auto 24px; padding:0 20px; display:flex; gap:10px; flex-wrap:wrap; }
+  .toolbar input { flex:1; min-width:220px; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:var(--panel); color:var(--text); outline:none; }
+  button { cursor:pointer; color:var(--text); background:var(--panel2); border:1px solid var(--border); padding:11px 14px; border-radius:11px; font-weight:600; }
+  button:hover { border-color:var(--accent); }
+  main { max-width:1100px; margin:0 auto; padding:0 20px 60px; }
+  .card { border:1px solid var(--border); border-radius:18px; overflow:hidden; margin:14px 0; background:rgba(20,28,49,.9); box-shadow:0 8px 30px rgba(0,0,0,.12); }
+  .card summary { list-style:none; cursor:pointer; padding:19px 22px; display:flex; align-items:center; gap:14px; }
+  .card summary::-webkit-details-marker { display:none; }
+  .num { flex:0 0 38px; width:38px; height:38px; display:grid; place-items:center; border-radius:12px; background:rgba(121,168,255,.12); color:var(--accent); font-weight:800; }
+  .title { flex:1; font-weight:700; font-size:1.05rem; }
+  .chev { color:var(--muted); transition:transform .2s; }
+  details[open] .chev { transform:rotate(180deg); }
+  .content { padding:0 22px 24px; border-top:1px solid var(--border); }
+  .aim { color:var(--accent2); font-weight:600; margin:18px 0 10px; }
+  h3 { margin:18px 0 8px; font-size:1rem; }
+  p, li { color:#d8e2f4; }
+  pre { white-space:pre; overflow-x:auto; background:#080d18; border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:16px; color:#cce2ff; font-size:.9rem; line-height:1.5; }
+  code { font-family:Consolas,Monaco,monospace; }
+  .output { background:#0b1424; }
+  table { width:100%; border-collapse:collapse; margin:12px 0; font-size:.94rem; }
+  th,td { text-align:left; padding:10px 12px; border:1px solid var(--border); }
+  th { background:rgba(121,168,255,.1); }
+  .note { border-left:3px solid var(--accent2); padding:10px 13px; background:rgba(139,233,196,.06); border-radius:7px; color:var(--muted); margin:12px 0; }
+  .revision { background:linear-gradient(135deg,rgba(121,168,255,.1),rgba(139,233,196,.08)); border:1px solid var(--border); padding:22px; border-radius:18px; margin-top:28px; }
+  .revision h2 { margin-top:0; }
+  footer { text-align:center; padding:20px; color:var(--muted); font-size:.9rem; }
+  .hidden { display:none !important; }
+  @media(max-width:600px){ header{padding-top:35px;} .card summary{padding:15px;} .content{padding:0 15px 18px;} pre{font-size:.82rem;} }
+</style>
+</head>
+<body>
+<header>
+  <span class="tag">C PROGRAMMING · LAB REVISION</span>
+  <h1>10 Lab Questions & Answers</h1>
+  <p>Programs, sample outputs, and key concepts for your C programming lab. Open a question to view its solution.</p>
+</header>
+<div class="toolbar">
+  <input id="search" type="search" placeholder="Search topics, functions, or keywords…" aria-label="Search questions">
+  <button onclick="setAll(true)">Expand all</button>
+  <button onclick="setAll(false)">Collapse all</button>
+</div>
+<main id="questions">
+<details class="card" open>
+<summary><span class="num">01</span><span class="title">Student Marks Using Functions and Arrays</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Read marks of 5 subjects, calculate total and average using functions, and find the highest mark using pointers.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int calculateTotal(int marks[], int n)
+{
+    int total = 0;
+    for(int i = 0; i &lt; n; i++)
+        total += marks[i];
+    return total;
+}
+
+float calculateAverage(int total, int n)
+{
+    return (float)total / n;
+}
+
+void findHighest(int marks[], int n, int *highest)
+{
+    *highest = marks[0];
+    for(int i = 1; i &lt; n; i++)
+        if(marks[i] &gt; *highest)
+            *highest = marks[i];
+}
+
+int main()
+{
+    int marks[5], total, highest;
+    float average;
+
+    printf("Enter marks of 5 subjects:\\n");
+    for(int i = 0; i &lt; 5; i++)
+        scanf("%d", &amp;marks[i]);
+
+    total = calculateTotal(marks, 5);
+    average = calculateAverage(total, 5);
+    findHighest(marks, 5, &amp;highest);
+
+    printf("Total marks = %d\\n", total);
+    printf("Average marks = %.2f\\n", average);
+    printf("Highest marks = %d\\n", highest);
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Enter marks of 5 subjects:
+85 90 78 92 88
+Total marks = 433
+Average marks = 86.60
+Highest marks = 92</pre>
+<h3>Key concepts</h3><ul><li><code>marks[]</code> passes an array to a function.</li><li><code>calculateTotal()</code> returns total marks.</li><li><code>calculateAverage()</code> returns the average.</li><li><code>&amp;highest</code> passes the address; <code>*highest</code> changes the original variable through the pointer.</li></ul>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">02</span><span class="title">Matrix Addition Using Functions</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Read two 2 × 2 matrices and calculate their sum using a separate function.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+void addMatrices(int a[2][2], int b[2][2], int sum[2][2])
+{
+    for(int i = 0; i &lt; 2; i++)
+        for(int j = 0; j &lt; 2; j++)
+            sum[i][j] = a[i][j] + b[i][j];
+}
+
+int main()
+{
+    int a[2][2], b[2][2], sum[2][2];
+
+    printf("Enter elements of first matrix:\\n");
+    for(int i = 0; i &lt; 2; i++)
+        for(int j = 0; j &lt; 2; j++)
+            scanf("%d", &amp;a[i][j]);
+
+    printf("Enter elements of second matrix:\\n");
+    for(int i = 0; i &lt; 2; i++)
+        for(int j = 0; j &lt; 2; j++)
+            scanf("%d", &amp;b[i][j]);
+
+    addMatrices(a, b, sum);
+    printf("Sum of matrices:\\n");
+    for(int i = 0; i &lt; 2; i++) {
+        for(int j = 0; j &lt; 2; j++)
+            printf("%d ", sum[i][j]);
+        printf("\\n");
+    }
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Enter elements of first matrix:
+1 2
+3 4
+Enter elements of second matrix:
+5 6
+7 8
+Sum of matrices:
+6 8
+10 12</pre>
+<h3>Logic</h3><p>Each corresponding element is added: <code>sum[i][j] = a[i][j] + b[i][j]</code>.</p>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">03</span><span class="title">String Length and Reversal Using Pointers</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Find string length and reverse a string using pointers, without predefined string functions.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    char str[100];
+    char *p, *q;
+    int length = 0;
+    char temp;
+
+    printf("Enter a string: ");
+    scanf("%99[^\\n]", str);
+
+    p = str;
+    while(*p != '\\0') {
+        length++;
+        p++;
+    }
+    printf("Length of string = %d\\n", length);
+
+    p = str;
+    q = str + length - 1;
+    while(p &lt; q) {
+        temp = *p;
+        *p = *q;
+        *q = temp;
+        p++;
+        q--;
+    }
+    printf("Reversed string = %s\\n", str);
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Enter a string: Hello World
+Length of string = 11
+Reversed string = dlroW olleH</pre>
+<h3>Logic</h3><ul><li><code>p</code> points to the first character; <code>q</code> points to the last character.</li><li>Swap characters at both pointers.</li><li>Move <code>p</code> forward and <code>q</code> backward until they meet or cross.</li></ul>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">04</span><span class="title">Factorial and Sum of Digits Using Recursion</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Find factorial and sum of digits of a number using recursive functions.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int factorial(int n)
+{
+    if(n == 0 || n == 1)
+        return 1;
+    return n * factorial(n - 1);
+}
+
+int sumDigits(int n)
+{
+    if(n == 0)
+        return 0;
+    return (n % 10) + sumDigits(n / 10);
+}
+
+int main()
+{
+    int n;
+    printf("Enter a number: ");
+    scanf("%d", &amp;n);
+    printf("Factorial = %d\\n", factorial(n));
+    printf("Sum of digits = %d\\n", sumDigits(n));
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Enter a number: 5
+Factorial = 120
+Sum of digits = 5</pre>
+<h3>Recursive logic</h3><p>Factorial: <code>n! = n × (n−1)!</code>. Sum of digits: <code>S(n) = (n % 10) + S(n / 10)</code>. The base case stops recursion when <code>n == 0</code> (or for factorial, when <code>n == 0 || n == 1</code>).</p>
+<div class="note">This sample is intended for non-negative input. Factorial values also overflow an int for sufficiently large inputs.</div>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">05</span><span class="title">Dynamic Memory Allocation — malloc(), calloc(), realloc()</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Dynamically allocate an integer array, read and display it, and demonstrate malloc(), realloc(), and calloc().</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    int n, i;
+    int *ptr;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &amp;n);
+
+    ptr = (int *)malloc(n * sizeof(int));
+    if(ptr == NULL) {
+        printf("Memory allocation failed\\n");
+        return 1;
+    }
+
+    printf("Enter %d elements:\\n", n);
+    for(i = 0; i &lt; n; i++)
+        scanf("%d", &amp;ptr[i]);
+
+    printf("Elements using malloc:\\n");
+    for(i = 0; i &lt; n; i++)
+        printf("%d ", ptr[i]);
+
+    ptr = (int *)realloc(ptr, (n + 2) * sizeof(int));
+    if(ptr == NULL) {
+        printf("Reallocation failed\\n");
+        return 1;
+    }
+
+    printf("\\nEnter 2 additional elements:\\n");
+    for(i = n; i &lt; n + 2; i++)
+        scanf("%d", &amp;ptr[i]);
+
+    printf("Elements after realloc:\\n");
+    for(i = 0; i &lt; n + 2; i++)
+        printf("%d ", ptr[i]);
+    free(ptr);
+
+    ptr = (int *)calloc(5, sizeof(int));
+    if(ptr == NULL) {
+        printf("Memory allocation failed\\n");
+        return 1;
+    }
+
+    printf("\\nElements initialized by calloc:\\n");
+    for(i = 0; i &lt; 5; i++)
+        printf("%d ", ptr[i]);
+
+    free(ptr);
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Enter number of elements: 3
+Enter 3 elements:
+10 20 30
+Elements using malloc:
+10 20 30
+Enter 2 additional elements:
+40 50
+Elements after realloc:
+10 20 30 40 50
+Elements initialized by calloc:
+0 0 0 0 0</pre>
+<h3>Comparison</h3><table><tr><th>Function</th><th>Purpose</th><th>Initialization</th></tr><tr><td><code>malloc()</code></td><td>Allocates memory</td><td>Uninitialized</td></tr><tr><td><code>calloc()</code></td><td>Allocates space for multiple elements</td><td>Zero-initialized</td></tr><tr><td><code>realloc()</code></td><td>Changes allocated block size</td><td>Preserves retained existing contents</td></tr></table>
+<p><code>free(ptr)</code> releases allocated memory back to the allocator.</p>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">06</span><span class="title">Student Details Using Structures and Pointers</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Store and display two students' details using an array of structures, typedef, and a structure pointer.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+typedef struct {
+    int roll;
+    char name[50];
+    float marks;
+} Student;
+
+int main()
+{
+    Student s[2];
+    Student *ptr = s;
+
+    for(int i = 0; i &lt; 2; i++) {
+        printf("Enter details of student %d:\\n", i + 1);
+        printf("Roll number: ");
+        scanf("%d", &amp;ptr[i].roll);
+        printf("Name: ");
+        scanf(" %49[^\\n]", ptr[i].name);
+        printf("Marks: ");
+        scanf("%f", &amp;ptr[i].marks);
+    }
+
+    printf("\\nStudent Details:\\n");
+    for(int i = 0; i &lt; 2; i++) {
+        printf("\\nRoll Number: %d\\n", ptr[i].roll);
+        printf("Name: %s\\n", ptr[i].name);
+        printf("Marks: %.2f\\n", ptr[i].marks);
+    }
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Enter details of student 1:
+Roll number: 101
+Name: Rahul
+Marks: 85
+Enter details of student 2:
+Roll number: 102
+Name: Amit
+Marks: 90
+Student Details:
+Roll Number: 101
+Name: Rahul
+Marks: 85.00
+Roll Number: 102
+Name: Amit
+Marks: 90.00</pre>
+<h3>Key concepts</h3><ul><li><code>typedef struct</code> creates the type alias <code>Student</code>.</li><li><code>Student s[2]</code> creates two structure records.</li><li><code>Student *ptr = s</code> points at the first structure in the array.</li></ul>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">07</span><span class="title">Union and Bit-fields</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Demonstrate shared memory in a union and use bit-fields for age and gender.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+union Data {
+    int integer;
+    float decimal;
+    char character;
+};
+
+struct Student {
+    unsigned int age : 7;
+    unsigned int gender : 1;
+};
+
+int main()
+{
+    union Data d;
+    struct Student s;
+
+    printf("Union demonstration:\\n");
+    d.integer = 100;
+    printf("Integer = %d\\n", d.integer);
+    d.decimal = 25.5;
+    printf("Float = %.2f\\n", d.decimal);
+    d.character = 'A';
+    printf("Character = %c\\n", d.character);
+
+    printf("\\nStudent details:\\n");
+    printf("Enter age: ");
+    scanf("%u", &amp;s.age);
+    printf("Enter gender (0 = Female, 1 = Male): ");
+    scanf("%u", &amp;s.gender);
+
+    printf("\\nAge = %u\\n", s.age);
+    if(s.gender == 1)
+        printf("Gender = Male\\n");
+    else
+        printf("Gender = Female\\n");
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Union demonstration:
+Integer = 100
+Float = 25.50
+Character = A
+Student details:
+Enter age: 18
+Enter gender (0 = Female, 1 = Male): 1
+Age = 18
+Gender = Male</pre>
+<h3>Union vs structure</h3><table><tr><th>Structure</th><th>Union</th></tr><tr><td>Members have separate storage</td><td>Members share storage</td></tr><tr><td>Size is generally the combined member storage, with padding</td><td>Size is at least large enough for its largest member, with alignment</td></tr><tr><td>Members can hold values simultaneously</td><td>Only one member's value is meaningful at a time</td></tr></table>
+<h3>Bit-fields</h3><p><code>age : 7</code> reserves a 7-bit field; <code>gender : 1</code> reserves a 1-bit field. Bit-field layout is implementation-dependent.</p>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">08</span><span class="title">Student Records Using Text Files</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Write student information to a text file using fprintf() and read it using fscanf().</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *fp;
+    int roll;
+    char name[50];
+    float marks;
+
+    fp = fopen("student.txt", "w");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+
+    printf("Enter roll number: ");
+    scanf("%d", &amp;roll);
+    printf("Enter name: ");
+    scanf(" %49[^\\n]", name);
+    printf("Enter marks: ");
+    scanf("%f", &amp;marks);
+
+    fprintf(fp, "%d %s %.2f\\n", roll, name, marks);
+    fclose(fp);
+
+    fp = fopen("student.txt", "r");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+
+    fscanf(fp, "%d %49s %f", &amp;roll, name, &amp;marks);
+    printf("\\nData read from file:\\n");
+    printf("Roll Number: %d\\n", roll);
+    printf("Name: %s\\n", name);
+    printf("Marks: %.2f\\n", marks);
+
+    fclose(fp);
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Enter roll number: 101
+Enter name: Rahul
+Enter marks: 88.5
+Data read from file:
+Roll Number: 101
+Name: Rahul
+Marks: 88.50</pre>
+<h3>File functions</h3><table><tr><th>Function</th><th>Purpose</th></tr><tr><td><code>fopen()</code></td><td>Opens a file</td></tr><tr><td><code>fprintf()</code></td><td>Writes formatted data to a file</td></tr><tr><td><code>fscanf()</code></td><td>Reads formatted data from a file</td></tr><tr><td><code>fclose()</code></td><td>Closes a file</td></tr></table>
+<p>Modes: <code>w</code> writes/overwrites, <code>r</code> reads an existing file, and <code>a</code> appends to the file.</p>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">09</span><span class="title">Student Records Using Binary Files</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Store one student record using fwrite(), retrieve it using fread(), and demonstrate fseek(), ftell(), and rewind().</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+struct Student {
+    int roll;
+    char name[50];
+    float marks;
+};
+
+int main()
+{
+    FILE *fp;
+    struct Student s;
+
+    printf("Enter roll number: ");
+    scanf("%d", &amp;s.roll);
+    printf("Enter name: ");
+    scanf(" %49[^\\n]", s.name);
+    printf("Enter marks: ");
+    scanf("%f", &amp;s.marks);
+
+    fp = fopen("student.dat", "wb");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+    fwrite(&amp;s, sizeof(s), 1, fp);
+    fclose(fp);
+
+    fp = fopen("student.dat", "rb");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+
+    printf("\\nInitial position: %ld\\n", ftell(fp));
+    fseek(fp, 0, SEEK_END);
+    printf("Position at end: %ld\\n", ftell(fp));
+    rewind(fp);
+    printf("Position after rewind: %ld\\n", ftell(fp));
+
+    fread(&amp;s, sizeof(s), 1, fp);
+    printf("\\nStudent Record:\\n");
+    printf("Roll Number: %d\\n", s.roll);
+    printf("Name: %s\\n", s.name);
+    printf("Marks: %.2f\\n", s.marks);
+
+    fclose(fp);
+    return 0;
+}</code></pre>
+<h3>Sample output</h3><pre class="output">Enter roll number: 101
+Enter name: Rahul
+Enter marks: 90
+Initial position: 0
+Position at end: (depends on structure size)
+Position after rewind: 0
+Student Record:
+Roll Number: 101
+Name: Rahul
+Marks: 90.00</pre>
+<h3>Functions</h3><ul><li><code>fwrite()</code> writes binary data.</li><li><code>fread()</code> reads binary data.</li><li><code>fseek()</code> moves the file position.</li><li><code>ftell()</code> reports current file position.</li><li><code>rewind()</code> moves the position to the beginning.</li></ul>
+<div class="note">The file position/size value depends on your compiler, system, and structure padding.</div>
+</div></details>
+
+
+<details class="card">
+<summary><span class="num">10</span><span class="title">File Operations Using Command-Line Arguments</span><span class="chev">⌄</span></summary>
+<div class="content">
+<p class="aim">Aim: Accept a filename from command-line arguments, display the file contents, and count characters using fgetc().</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[])
+{
+    FILE *fp;
+    int ch, count = 0;
+
+    if(argc != 2) {
+        printf("Usage: %s filename\\n", argv[0]);
+        return 1;
+    }
+
+    fp = fopen(argv[1], "r");
+    if(fp == NULL) {
+        printf("File cannot be opened\\n");
+        return 1;
+    }
+
+    printf("File contents:\\n");
+    while((ch = fgetc(fp)) != EOF) {
+        putchar(ch);
+        count++;
+    }
+
+    printf("\\n\\nTotal number of characters = %d\\n", count);
+    fclose(fp);
+    return 0;
+}</code></pre>
+<h3>Create data.txt</h3><pre class="output">Hello World
+
+Welcome to C</pre>
+<h3>Compile and run</h3><pre><code>gcc program.c -o program
+./program data.txt</code></pre>
+<h3>Sample output</h3><pre class="output">File contents:
+Hello World
+
+Welcome to C
+
+Total number of characters = 20</pre>
+<h3>Command-line arguments</h3><table><tr><th>Expression</th><th>Meaning</th></tr><tr><td><code>argc</code></td><td>Number of command-line arguments</td></tr><tr><td><code>argv</code></td><td>Array of argument strings</td></tr><tr><td><code>argv[0]</code></td><td>Program name/path</td></tr><tr><td><code>argv[1]</code></td><td>Filename supplied by user</td></tr></table>
+<p>For <code>./program data.txt</code>, <code>argc = 2</code>, <code>argv[0] = "./program"</code>, and <code>argv[1] = "data.txt"</code>.</p>
+</div></details>
+
+<div class="revision">
+<h2>Quick Revision Table</h2>
+<table><tr><th>Q</th><th>Topic</th><th>Key concepts</th></tr>
+<tr><td>1</td><td>Marks</td><td>Arrays, functions, pointers</td></tr><tr><td>2</td><td>Matrix Addition</td><td>2D arrays, functions</td></tr><tr><td>3</td><td>String Reversal</td><td>Strings, pointers, pointer arithmetic</td></tr><tr><td>4</td><td>Recursion</td><td>Recursive functions, base conditions</td></tr><tr><td>5</td><td>Dynamic Memory</td><td>malloc, calloc, realloc, free</td></tr><tr><td>6</td><td>Structures</td><td>typedef, arrays of structures, pointers</td></tr><tr><td>7</td><td>Union &amp; Bit-fields</td><td>Shared memory, bit-fields</td></tr><tr><td>8</td><td>Text Files</td><td>fprintf, fscanf</td></tr><tr><td>9</td><td>Binary Files</td><td>fwrite, fread, fseek, ftell, rewind</td></tr><tr><td>10</td><td>Command-line Files</td><td>argc, argv, fgetc, EOF</td></tr></table>
+<p><strong>High-priority practice:</strong> Questions 3, 5, 7, 9, and 10 — pointers, dynamic memory, bit-fields, binary files, and command-line file handling.</p>
+</div>
+</main>
+<footer>Made for C Programming Lab Revision · Use the search bar to filter questions</footer>
+<script>
+  function setAll(open) { document.querySelectorAll('main details.card').forEach(d => d.open = open); }
+  const search = document.getElementById('search');
+  search.addEventListener('input', () => {
+    const term = search.value.toLowerCase().trim();
+    document.querySelectorAll('main details.card').forEach(card => {
+      const matches = card.textContent.toLowerCase().includes(term);
+      card.classList.toggle('hidden', !matches);
+      if(term && matches) card.open = true;
+    });
+  });
+</script>
+</body>
+</html>
